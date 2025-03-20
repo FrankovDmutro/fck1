@@ -28,10 +28,14 @@ int addPrices(Price& p1, const Price& p2) {
 }
 
 int roundPrice(Price& p1) {
+    // Перетворюємо гривні та копійки в загальну кількість копійок
     int totalKopiykas = p1.hryvnias * 100 + p1.kopiykas;
-    totalKopiykas = round(static_cast<double>(totalKopiykas)); // Round to the nearest integer
+    // Округлюємо до найближчого десятка копійок
+    totalKopiykas = round(totalKopiykas / 10.0) * 10;
+    // Перетворюємо назад у гривні та копійки
     p1.hryvnias = totalKopiykas / 100;
     p1.kopiykas = totalKopiykas % 100;
+    
     return 0;
 }
 
@@ -53,10 +57,9 @@ void processPrices() {
         multiplyPrice(sum, quantity);
         addPrices(temp, sum);
     }
-
-    roundPrice(temp);
-
     file.close();
 
+    cout << "Загальна ціна заокруглення: " << temp.hryvnias << " грн. " << temp.kopiykas << " коп." << endl;
+    roundPrice(temp);
     cout << "Загальна ціна: " << temp.hryvnias << " грн. " << temp.kopiykas << " коп." << endl;
 }
