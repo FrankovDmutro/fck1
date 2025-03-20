@@ -1,0 +1,34 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"iostream": "cpp",
+			"random": "cpp",
+			"fstream": "cpp",
+			"*.tcc": "cpp",
+			"cctype": "cpp",
+			"clocale": "cpp",
+			"cstdarg": "cpp",
+			"cstddef": "cpp",
+			"cstdint": "cpp",
+			"cstdio": "cpp",
+			"cstdlib": "cpp",
+			"cstring": "cpp",
+			"ctime": "cpp",
+			"cwchar": "cpp",
+			"cwctype": "cpp",
+			"memory_resource": "cpp",
+			"utility": "cpp",
+			"iomanip": "cpp",
+			"new": "cpp",
+			"sstream": "cpp",
+			"typeinfo": "cpp",
+			"iosfwd": "cpp",
+			"vector": "cpp"
+		}
+	}
+}
