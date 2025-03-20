@@ -7,15 +7,17 @@
 
 using namespace std;
 
-int multiplyPrice(Price p1, int multiplier) {
-    //return (p.hryvnias * 100 + p.kopiykas) * multiplier;
+int multiplyPrice(Price& p1, int multiplier) {
     p1.hryvnias *= multiplier;
     p1.kopiykas *= multiplier;
+    if (p1.kopiykas >= 100) {
+        p1.hryvnias += p1.kopiykas / 100;
+        p1.kopiykas %= 100;
+    }
     return 0;
 }
 
-int addPrices(Price p1, const Price& p2) {
-    //return (p1.hryvnias * 100 + p1.kopiykas) + (p2.hryvnias * 100 + p2.kopiykas);
+int addPrices(Price& p1, const Price& p2) {
     p1.hryvnias += p2.hryvnias;
     p1.kopiykas += p2.kopiykas;
     if (p1.kopiykas >= 100) {
@@ -25,16 +27,12 @@ int addPrices(Price p1, const Price& p2) {
     return 0;
 }
 
-int roundPrice(Price p1) {
+int roundPrice(Price& p1) {
     int totalKopiykas = p1.hryvnias * 100 + p1.kopiykas;
     totalKopiykas = round(static_cast<double>(totalKopiykas)); // Round to the nearest integer
     p1.hryvnias = totalKopiykas / 100;
     p1.kopiykas = totalKopiykas % 100;
     return 0;
-}
-
-void displayResults(int productCount, const Price& totalBeforeRounding, const Price& totalAfterFix) {
-
 }
 
 void processPrices() {
@@ -44,24 +42,21 @@ void processPrices() {
         return;
     }
 
-    //vector<Price> prices; // Динамічний список цін
-    Price temp = {0,0};
+    Price temp = {0, 0};
     Price sum = {0, 0};
     int grn;
     short int kop;
     int quantity;
 
-    // Читаємо всі ціни з файлу
     while (file >> grn >> kop >> quantity) {
         sum = {grn, kop};
         multiplyPrice(sum, quantity);
         addPrices(temp, sum);
     }
 
-    roundPrice(sum);
+    roundPrice(temp);
 
     file.close();
 
-    cout << "Загальна ціна: " << sum.hryvnias << " грн. " << sum.kopiykas << " коп." << endl;
-
+    cout << "Загальна ціна: " << temp.hryvnias << " грн. " << temp.kopiykas << " коп." << endl;
 }

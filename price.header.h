@@ -6,11 +6,10 @@ struct Price {
     short kopiykas;
 };
 
-int multiplyPrice(Price p1, int multiplier);
-int addPrices(Price p1, const Price& p2);
-int roundPrice(Price p1);
+int multiplyPrice(Price& p1, int multiplier);
+int addPrices(Price& p1, const Price& p2);
+int roundPrice(Price& p1);
 
-void displayResults(int productCount, const Price& totalBeforeRounding, const Price& totalAfterFix);
 void processPrices();
 
 #endif // PRICE_HEADER_H
