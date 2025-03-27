@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
 #include <cmath>
 
 #include "price.header.h"
@@ -8,12 +7,9 @@
 using namespace std;
 
 int multiplyPrice(Price& p1, int multiplier) {
-    p1.hryvnias *= multiplier;
-    p1.kopiykas *= multiplier;
-    if (p1.kopiykas >= 100) {
-        p1.hryvnias += p1.kopiykas / 100;
-        p1.kopiykas %= 100;
-    }
+    int totalKopiykas = (p1.hryvnias * 100 + p1.kopiykas) * multiplier;
+    p1.hryvnias = totalKopiykas / 100;
+    p1.kopiykas = totalKopiykas % 100;
     return 0;
 }
 
@@ -28,14 +24,10 @@ int addPrices(Price& p1, const Price& p2) {
 }
 
 int roundPrice(Price& p1) {
-    // Перетворюємо гривні та копійки в загальну кількість копійок
-    int totalKopiykas = p1.hryvnias * 100 + p1.kopiykas;
-    // Округлюємо до найближчого десятка копійок
-    totalKopiykas = round(totalKopiykas / 10.0) * 10;
-    // Перетворюємо назад у гривні та копійки
+    //Тут (totalKopiykas + 5) / 10 * 10 округлює до найближчого десятка копійок.
+    int totalKopiykas = (p1.hryvnias * 100 + p1.kopiykas + 5) / 10 * 10;
     p1.hryvnias = totalKopiykas / 100;
     p1.kopiykas = totalKopiykas % 100;
-    
     return 0;
 }
 
@@ -48,18 +40,18 @@ void processPrices() {
 
     Price temp = {0, 0};
     Price sum = {0, 0};
-    int grn;
-    short int kop;
+    // int grn;
+    // short int kop;
     int quantity;
 
-    while (file >> grn >> kop >> quantity) {
-        sum = {grn, kop};
-        multiplyPrice(sum, quantity);
-        addPrices(temp, sum);
+    while (file >> temp.hryvnias >> temp.kopiykas >> quantity) {
+        // sum = {grn, kop};
+        multiplyPrice(temp, quantity);
+        addPrices(sum, temp);
     }
     file.close();
 
-    cout << "Загальна ціна заокруглення: " << temp.hryvnias << " грн. " << temp.kopiykas << " коп." << endl;
-    roundPrice(temp);
-    cout << "Загальна ціна: " << temp.hryvnias << " грн. " << temp.kopiykas << " коп." << endl;
+    cout << "Загальна ціна: " << sum.hryvnias << " грн. " << sum.kopiykas << " коп." << endl;
+    roundPrice(sum);
+    cout << "Заокруглена ціна: " << sum.hryvnias << " грн. " << sum.kopiykas << " коп." << endl;
 }
